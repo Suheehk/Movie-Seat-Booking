@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    background: linear-gradient(rgba(0, 18, 50, 0.84), rgba(0, 0, 0, 0.95)), bottom;
+    background-size: cover;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(66, 94, 143);
+    padding-top: 25px;
+
+}
+
+.movie-container {
+    margin: 20px 0;
+}
+
+.movie-container select {
+    background-color: #fff;
+    font-family: 'Lato',
+        sans-serif;
+    border: 0;
+    border-radius: 5px;
+    font-size: 18px;
+    outline: none;
+    margin-left: 10px;
+    padding: 5px 15px 5px 15px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.movie-screen{
+    background-color: white;
+    height: 100px;
+    width: 100%;
+    margin:15px 0;
+    transform: rotateX('-45deg');
+    box-shadow: 0 3px 10px rgba(255,255,255,0.7);
+}
+
+.container {
+    
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.row-container {
+    margin-top: 30px;
+}
+
+
+.seat {
+    background-color: #444451;
+    height: 12px;
+    width: 15px;
+    margin: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    height: 30px;
+    width: 35px;
+    background: #1a023d;
+    border: 2px solid #314c81;
+    transition: all .2s ease;
+}
+
+.seat.selected {
+    background-color: #6feaf6;
+    background-color: #31d7a9;
+}
+
+.seat.occupied {
+    background-color: #ee1fc8;
+}
+
+.seat:nth-of-type(2) {
+    margin-right: 18px;
+}
+
+.seat:nth-last-of-type(2) {
+    margin-left: 18px;
+}
+
+.seat:not(.occupied):hover {
+    /* Selecting seats that do not have "occupied" class */
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.showcase .seat:not(.occupied):hover {
+    cursor: default;
+    transform: scale(1);
+}
+
+.showcase {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #777;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.showcase li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+}
+
+.showcase li small {
+    margin-left: 2px;
+}
+
+.row {
+    display: flex;
+}
+
+.screen {
+    background-color: #fff;
+    height: 70px;
+    width: 100%;
+    margin: 15px 0;
+    transform: rotateX(-45deg);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, .7);
+}
+
+p.text {
+    margin: 5px 0;
+}
+
+p.text span {
+    color: #6feaf5;
+}
+
+.movie-screen {
+    margin-top: 35px;
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.subtitle {
+    position: relative;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 10px;
+    color: #31d7a9;
+    font-size: 16px;
+    max-width: 270px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.subtitle:before,
+.subtitle:after {
+    position: absolute;
+    content: '';
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    height: 1px;
+    background: #213a69;
+}
+
+.subtitle:before {
+    width: 80%;
+    top: 0;
+}
+
+.subtitle:after {
+    width: 100%;
+    bottom: 0;
+}
+
+.text {
+    font-size: 18px;
+}
+
+#count,
+#total {
+    font-size: 24px;
+    padding: 0 8px;
+}
+.title{
+    position: relative;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 0px;
+    color: #31d7a9;
+    font-size: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.title:before,
+.title:after {
+    position: absolute;
+    content: '';
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    height: 1px;
+    background: #9030cc;
+}
+.title:before {
+    width: 80%;
+    top: 0;
+}
+
+.title:after {
+    width: 100%;
+    bottom: 0;
+}
+
+#myInput {
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #314c81;
+  margin-bottom: 12px;
+  display: none;
+}
+table{
+  justify-content: center;
+  align-items: center;
+}
+
+#show {
+  border-collapse: collapse;
+  width: auto;
+  border: 1px solid #314c81;
+  font-size: 18px;
+  justify-content: center;
+  align-items: center;
+  display: none;
+
+}
+
+#show th, #show td {
+  text-align: center ;
+  padding: 12px;
+}
+
+#show tr {
+  border: 1px solid #314c81 ;
+}
+#show td {
+  border: 1px solid #314c81;
+}
+
+#show tr.header, #show tr:hover {
+  background-color: #1a023d;
+}
+th{
+  color: #31d7a9;
+        background-color:  #1a023d;
+        border: 1px solid #314c81
+    }
+    .Title{
+    position: relative;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 1px;
+    color: #31d7a9;
+    font-size: 26px;
+    max-width: 270px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.Title:before,
+.Title:after {
+    position: absolute;
+    content: '';
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    height: 1px;
+    background: #9030cc;
+}
+.Title:before {
+    width: 80%;
+    top: 0;
+}
+
+.Title:after {
+    width: 100%;
+    bottom: 0;
+}
+#submit {
+  background-color: #1a023d;
+  border: 1px solid #314c81;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  
+}
+#submit:hover {
+  background-color: #563685;
+  color: white;
+}
+button {
+  background-color: #1a023d;
+  border: 1px solid #314c81;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #563685;
+  color: white;
+}
+
+    </style>
+    <title>Movie Seat Booking</title>
+</head>
+
+<body>
+    <div class="title">
+        <p><center>MOVIE SEAT RESERVATION</center></p>
+    </div>
+      <div class="movie-container">
+        <label for="name">NAME</label>
+            <input type="text" name="name" id="name" required>
+        <label>Pick a movie:</label>
+            <select id="movie" required>
+                <option value="650">WINGS (₹150)</option>
+                <option value="850">BE (₹250)</option>
+                <option value="550">LOVE YOURSELF (₹150)</option>
+                <option value="750">MAP OF THE SOUL (₹250)</option>
+            </select>
+            <label for="selectedseat">Select number of seat</label>
+            <input type="number" name="selectedseat" id="selectedseat" required>
+      </div>
+    </form>
+    <br>
+      <button onclick="myFunction()">Select Seat</button>
+        
+      <ul class="showcase">
+        <li>
+          <div class="seat"></div>
+          <small>N/A</small>
+        </li>
+        <li>
+          <div class="seat selected"></div>
+          <small>Selected</small>
+        </li>
+        <li>
+          <div class="seat occupied"></div>
+          <small>Occupied</small>
+        </li>
+      </ul>
+      <div class="container">
+        <div class="screen"></div>
+    
+            <div class="row">
+                <div class="seat">A1</div>
+                <div class="seat">A2</div>
+                <div class="seat">A3</div>
+                <div class="seat">A4</div>
+                <div class="seat">A5</div>
+                <div class="seat">A6</div>
+                <div class="seat">A7</div>
+                <div class="seat">A8</div>
+            </div>
+            <div class="row">
+                <div class="seat">B1</div>
+                <div class="seat">B2</div>
+                <div class="seat">B3</div>
+                <div class="seat occupied">B4</div>
+                <div class="seat occupied">B5</div>
+                <div class="seat">B6</div>
+                <div class="seat">B7</div>
+                <div class="seat">B8</div>
+            </div>
+            <div class="row">
+                <div class="seat">C1</div>
+                <div class="seat">C2</div>
+                <div class="seat">C3</div>
+                <div class="seat">C4</div>
+                <div class="seat">C5</div>
+                <div class="seat">C6</div>
+                <div class="seat occupied">C7</div>
+                <div class="seat occupied">C8</div>
+            </div>
+            <div class="row">
+                <div class="seat">D1</div>
+                <div class="seat">D2</div>
+                <div class="seat">D3</div>
+                <div class="seat">D4</div>
+                <div class="seat">D5</div>
+                <div class="seat">D5</div>
+                <div class="seat">D7</div>
+                <div class="seat">D8</div>
+            </div>
+            <div class="row">
+                <div class="seat">E1</div>
+                <div class="seat">E2</div>
+                <div class="seat">E3</div>
+                <div class="seat occupied">E4</div>
+                <div class="seat occupied">E5</div>
+                <div class="seat">E6</div>
+                <div class="seat">E7</div>
+                <div class="seat">E8</div>
+            </div>
+            <h5 class='subtitle'>GOLD</h5>
+            <div class="row">
+                <div class="seat">F1</div>
+                <div class="seat">F2</div>
+                <div class="seat">F3</div>
+                <div class="seat">F4</div>
+                <div class="seat">F5</div>
+                <div class="seat">F6</div>
+                <div class="seat">F7</div>
+                <div class="seat">F8</div>
+            </div>
+            <div class="row">
+                <div class="seat">G1</div>
+                <div class="seat">G2</div>
+                <div class="seat">G3</div>
+                <div class="seat">G4</div>
+                <div class="seat occupied">G5</div>
+                <div class="seat occupied">G6</div>
+                <div class="seat occupied">G7</div>
+                <div class="seat">G8</div>
+            </div>
+            <h5 class='subtitle'>DIAMOND</h5>
+      <br>
+      <center><input class="btn btn-secondary mx-auto" type="button" value="Confirm Booking" id="submit" onclick="AddRow()"></center>
+      <br><br><br>
+      <div class="Title" id="Title" style="display: none;">
+      <p>DETAILS</p>
+      </div>
+      <br><br>
+      <input type="text" id="myInput" onkeyup="mysearch()" placeholder="Search for names.." title="Type in a name">
+      </div>
+      <br>
+      <table id="show">
+      
+        <tr>
+          <th>NAME</th>
+          <th>MOVIE</th>
+          <th>SELECTED SEAT</th>
+          <th>SEAT</th>
+        </tr>
+        <tr>
+          <td>tanu</td>
+          <td>BE (₹250)</td>
+          <td>2</td>
+          <td>A1,A2</td>
+        </tr>
+        <tr>
+          <td>jimin</td>
+          <td>WINGS (₹150)</td>
+          <td>1</td>
+          <td>A5</td>
+        </tr>
+        <tr>
+          <td>V</td>
+          <td>LOVE YOURSELF (₹150)</td>
+          <td>1</td>
+          <td>B1</td>
+        </tr>
+        <tr>
+          <td>jin kim</td>
+          <td>LOVE YOURSELF (₹150)</td>
+          <td>2</td>
+          <td>B5,B6</td>
+        </tr>
+        <tr>
+          <td>jungkook</td>
+          <td>LOVE YOURSELF (₹150)</td>
+          <td>1</td>
+          <td>B7</td>
+        </tr>
+        <tr>
+          <td>jin park</td>
+          <td>MAP OF THE SOUL (₹250)</td>
+          <td>1</td>
+          <td>B8</td>
+        </tr>
+        <tr>
+          <td>suga</td>
+          <td>BE (₹250)</td>
+          <td>2</td>
+          <td>C1,C2</td>
+        </tr>
+        <tr>
+          <td>j-hope</td>
+          <td>BE (₹250)</td>
+          <td>2</td>
+          <td>C3,C4</td>
+        </tr>
+        <tr>
+          <td>namjoon</td>
+          <td>MAP OF THE SOUL (₹250)</td>
+          <td>2</td>
+          <td>A3,A4</td>
+        </tr>
+        <tr>
+          <td>jin</td>
+          <td>WINGS (₹150)</td>
+          <td>2</td>
+          <td>G3,G4</td>
+        </tr>
+    
+        
+    
+      
+    </table>
+    </div>
+    
+    
+    
+    
+    </div>
+    <script>
+           function AddRow() {
+      const selected = document.querySelectorAll('.row .seat.selected');
+      const name = document.getElementById('name').value;
+      const movieSelect = document.getElementById('movie');
+      const selectedMovie = movieSelect.options[movieSelect.selectedIndex].text;
+      const selectedseat = document.getElementById("selectedseat").value;
+
+      if (selected.length > 0 && name.trim() !== '') {
+        selected.forEach(seat => seat.classList.add('occupied'));
+
+        const bookingTable = document.getElementById('show');
+        const newRow = bookingTable.insertRow(-1);
+        const nameCell = newRow.insertCell(0);
+        const movieCell = newRow.insertCell(1);
+        const seatCell = newRow.insertCell(2);
+        const seatsCell = newRow.insertCell(3);
+
+        nameCell.innerHTML = name;
+        movieCell.innerHTML = selectedMovie;
+        seatCell.innerHTML =selectedseat;
+        seatsCell.innerHTML = Array.from(selected).map(seat => seat.textContent).join(', ');
+
+        selected.forEach(seat => seat.classList.remove('selected'));
+        document.getElementById('name').value = '';
+      }
+      var T = document.getElementById("Title").style.display="block";
+          var y = document.getElementById("myInput").style.display="block";
+          var s = document.getElementById("show").style.display="block";
+
+    }; 
+        
+      
+      </script>
+      <script>
+        function mysearch() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("show");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }       
+          }
+        }
+          function myFunction() {
+            const name = document.getElementById('name').value;
+            const selectedseat = document.getElementById("selectedseat").value;
+            const container = document.querySelector('.container');
+            if(name=="") {
+                alert("please enter the name");
+                container.style.display = 'none';
+            } 
+             else if(selectedseat=="") {
+                alert("please select number of seats");
+                container.style.display = 'none';
+            } else {
+      container.style.display = 'block';
+            }
+            container.style.display = 'block';
+    }
+    const container = document.querySelector('.container');
+    const seats = document.querySelectorAll('.row .seat:not(.occupied)');
+    const selectedSeats = document.getElementById('selectedseat');
+    let numberOfSelectedSeats = 0;
+
+    selectedSeats.addEventListener('change', () => {
+      numberOfSelectedSeats = parseInt(selectedSeats.value);
+      updateSelectedSeats();
+    });
+
+    container.addEventListener('click', (event) => {
+      if (
+        event.target.classList.contains('seat') &&
+        !event.target.classList.contains('occupied') &&
+        numberOfSelectedSeats > 0
+      ) {
+        event.target.classList.toggle('selected');
+        updateSelectedSeats();
+      }
+    });
+
+    function updateSelectedSeats() {
+      const selected = document.querySelectorAll('.row .seat.selected');
+      if (selected.length > numberOfSelectedSeats) {
+        selected.forEach((seat) => {
+          if (numberOfSelectedSeats > 0) {
+            alert("you can select only selected umber of seats");
+            seat.classList.remove('selected');
+          }
+        });
+      }
+    
+    }
+      </script>
+      
+      
+      
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+</body>
+
+</html>
+
+
+
+
